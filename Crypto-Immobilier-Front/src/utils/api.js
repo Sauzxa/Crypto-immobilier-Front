@@ -49,7 +49,26 @@ export const heroAPI = {
   },
 };
 
+// Description content specific API calls
+export const descriptionAPI = {
+  // Get description content
+  getDescriptionContent: () => {
+    return apiCall(API_ENDPOINTS.DESCRIPTION_CONTENT, {
+      method: 'GET',
+    });
+  },
+
+  // Update description content
+  updateDescriptionContent: (content) => {
+    return apiCall(API_ENDPOINTS.DESCRIPTION_CONTENT, {
+      method: 'POST',
+      body: JSON.stringify(content),
+    });
+  },
+};
+
 export default {
   apiCall,
   heroAPI,
+  descriptionAPI,
 };
