@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom toggle switch styles */
+.toggle-checkbox:checked {
+  right: 0;
+  border-color: #2563eb;
+  transform: translateX(100%);
+}
+
+.toggle-checkbox:checked + .toggle-label {
+  background-color: #2563eb;
+}
+
+.toggle-label {
+  transition: background-color 0.2s;
+}
+
+.toggle-checkbox {
+  transition: all 0.2s;
+  top: 0;
+  left: 0;
+}
