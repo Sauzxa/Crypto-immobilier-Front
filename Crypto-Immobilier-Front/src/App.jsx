@@ -1,13 +1,16 @@
 
-
 import NavBar from './components/Header/NavBar';
+import Hero from './components/Hero';
+import { HeroProvider } from './context/HeroContext';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <NavBar />
-     
-    </div>
+    <HeroProvider>
+      <div className="relative">
+        <NavBar />
+        <Hero />
+      </div>
+    </HeroProvider>
   )
 }
 
