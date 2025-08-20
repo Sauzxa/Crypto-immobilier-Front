@@ -12,7 +12,7 @@ const Description = () => {
       </div>
     );
   }
-
+//
   if (error) {
     console.error('Description content error:', error);
     // Still render with default content if there's an error
