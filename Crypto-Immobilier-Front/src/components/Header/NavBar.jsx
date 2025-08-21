@@ -1,9 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+// Navigation items with their corresponding section IDs
+const navItems = [
+  { name: 'Home', href: '#home', id: 'home' },
+  { name: 'Find Us', href: '#footer', id: 'footer' }, // Will be added later
+  { name: 'Sellers', href: '#sellers', id: 'sellers' },
+  { name: 'About Us', href: '#about', id: 'about' },
+  { name: 'Reservation', href: '#reservation', id: 'reservation' }
+];
 
 const NavBar = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Smooth scroll function
+  const smoothScrollTo = (elementId) => {
+    // Special case for footer (not yet implemented)
+    if (elementId === 'footer') {
+      console.log('Footer section will be available after footer implementation');
+      setIsMobileMenuOpen(false);
+      return;
+    }
+    
+    const element = document.getElementById(elementId);
+    if (element) {
+      const navHeight = 80; // Height of the navbar
+      const elementPosition = element.offsetTop - navHeight;
+      
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+      
+      // Close mobile menu if open
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  // Track active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navItems.map(item => item.id);
+      const scrollPosition = window.scrollY + 100; // Offset for navbar height
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Call once to set initial active section
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLanguageChange = (lang) => {
     setSelectedLanguage(lang);
@@ -34,36 +90,25 @@ const NavBar = () => {
           {/* Navigation Menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
-              <a 
-                href="#" 
-                className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium font-inter transition-colors duration-200"
-              >
-                Home
-              </a>
-              <a 
-                href="#" 
-                className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium font-inter transition-colors duration-200"
-              >
-                About Us
-              </a>
-              <a 
-                href="#" 
-                className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium font-inter transition-colors duration-200"
-              >
-                Gallery
-              </a>
-              <a 
-                href="#" 
-                className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium font-inter transition-colors duration-200"
-              >
-                News
-              </a>
-              <a 
-                href="#" 
-                className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium font-inter transition-colors duration-200"
-              >
-                Contact Us
-              </a>
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => smoothScrollTo(item.id)}
+                  className={`px-3 py-2 text-sm font-medium font-inter transition-all duration-300 relative group ${
+                    activeSection === item.id
+                      ? 'text-blue-600'
+                      : 'text-gray-600 hover:text-blue-600'
+                  }`}
+                >
+                  {item.name}
+                  {/* Active indicator */}
+                  <span
+                    className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ${
+                      activeSection === item.id ? 'w-full' : 'group-hover:w-full'
+                    }`}
+                  />
+                </button>
+              ))}
             </div>
           </div>
           
@@ -173,18 +218,46 @@ const NavBar = () => {
           <div className="md:hidden">
             <button
               type="button"
-              className="bg-gray-900 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               aria-controls="mobile-menu"
-              aria-expanded="false"
+              aria-expanded={isMobileMenuOpen}
             >
               <span className="sr-only">Open main menu</span>
-              <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+              {isMobileMenuOpen ? (
+                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
             </button>
           </div>
         </div>
       </div>
+      
+      {/* Mobile menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200 shadow-lg">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => smoothScrollTo(item.id)}
+                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ${
+                  activeSection === item.id
+                    ? 'text-blue-600 bg-blue-50'
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
+                }`}
+              >
+                {item.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

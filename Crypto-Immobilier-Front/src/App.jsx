@@ -6,6 +6,21 @@ import SellersSection from './components/SellersSection';
 import ReservationForm from './components/ReservationForm';
 import { HeroProvider } from './context/HeroContext';
 import { DescriptionProvider } from './context/DescriptionContext';
+import { motion } from 'framer-motion';
+
+// Animation variants for sections
+const sectionVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 50,
+    transition: { duration: 0.6 }
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.8, ease: "easeOut" }
+  }
+};
 
 function App() {
   return (
@@ -13,10 +28,50 @@ function App() {
       <DescriptionProvider>
         <div className="relative">
           <NavBar />
-          <Hero />
-          <Description />
-          <SellersSection />
-          <ReservationForm />
+          
+          {/* Hero Section */}
+          <motion.section
+            id="home"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={sectionVariants}
+          >
+            <Hero />
+          </motion.section>
+
+          {/* About Section - Description */}
+          <motion.section
+            id="about"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={sectionVariants}
+          >
+            <Description />
+          </motion.section>
+
+          {/* Sellers Section */}
+          <motion.section
+            id="sellers"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={sectionVariants}
+          >
+            <SellersSection />
+          </motion.section>
+
+          {/* Reservation Section */}
+          <motion.section
+            id="reservation"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={sectionVariants}
+          >
+            <ReservationForm />
+          </motion.section>
         </div>
       </DescriptionProvider>
     </HeroProvider>
