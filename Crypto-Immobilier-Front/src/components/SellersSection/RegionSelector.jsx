@@ -9,7 +9,7 @@ const RegionSelector = ({ regions, selectedRegion, onRegionChange }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-50">
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -31,12 +31,12 @@ const RegionSelector = ({ regions, selectedRegion, onRegionChange }) => {
         <>
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 z-10" 
+            className="fixed inset-0 z-[9998]" 
             onClick={() => setIsOpen(false)}
           />
           
           {/* Dropdown Content */}
-          <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg z-20 overflow-hidden">
+          <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-xl z-[9999] overflow-hidden">
             {regions.map((region) => (
               <button
                 key={region.id}

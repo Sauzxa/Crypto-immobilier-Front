@@ -31,7 +31,7 @@ const SellersSection = () => {
 
 
   return (
-    <section className="py-16 bg-gray-50 overflow-hidden">
+    <section className="py-16 bg-gray-50 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         
         {/* Main Layout - Left: Text + Controls, Right: Apartments */}
@@ -59,7 +59,7 @@ const SellersSection = () => {
           </div>
 
           {/* Right Column - Apartments Grid */}
-          <div className="flex-1 lg:w-2/3 overflow-hidden">
+          <div className="flex-1 lg:w-2/3 overflow-x-auto">
             <ApartmentsGrid
               apartments={selectedRegion.apartments}
               currentIndex={currentIndex}

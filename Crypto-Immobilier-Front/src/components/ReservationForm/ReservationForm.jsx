@@ -36,7 +36,7 @@ const ReservationForm = () => {
                 alt="Crypto Immobilier Logo" 
                 className="w-16 h-16 mr-4"
               />
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-800">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-800 font-inter leading-tight">
                 Reservation
               </h2>
             </div>
