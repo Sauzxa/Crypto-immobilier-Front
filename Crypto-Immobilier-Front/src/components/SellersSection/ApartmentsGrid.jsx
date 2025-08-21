@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const ApartmentsGrid = ({ apartments, isRegionMode }) => {
+const ApartmentsGrid = ({ apartments, currentIndex }) => {
   const [hoveredApartment, setHoveredApartment] = useState(null);
+  const [maxVisible, setMaxVisible] = useState(4);
 
-  if (!isRegionMode) {
-    // When in Apartments mode, show a message or empty state
-    return (
-      <div className="text-center py-12">
-        <p className="text-gray-500 font-inter text-lg">
-          Switch to Regions mode to view apartments
-        </p>
-      </div>
-    );
-  }
+  // Update maxVisible based on screen size
+  useEffect(() => {
+    const updateMaxVisible = () => {
+      let newMaxVisible;
+      if (window.innerWidth >= 1024) newMaxVisible = 4; // lg screens
+      else if (window.innerWidth >= 768) newMaxVisible = 3; // md screens
+      else if (window.innerWidth >= 640) newMaxVisible = 2; // sm screens
+      else newMaxVisible = 1; // mobile screens
+      
+      setMaxVisible(newMaxVisible);
+    };
+
+    updateMaxVisible();
+    window.addEventListener('resize', updateMaxVisible);
+    return () => window.removeEventListener('resize', updateMaxVisible);
+  }, []);
 
   if (!apartments || apartments.length === 0) {
     return (
@@ -24,15 +31,31 @@ const ApartmentsGrid = ({ apartments, isRegionMode }) => {
     );
   }
 
+  // Create a sliding window of apartments like a scrollbar
+  const getVisibleApartments = () => {
+    const totalApartments = apartments.length;
+    
+    // Simple scrollbar logic: start from currentIndex and show maxVisible apartments
+    const startIndex = currentIndex;
+    const endIndex = Math.min(startIndex + maxVisible, totalApartments);
+    
+    console.log('Debug - currentIndex:', currentIndex, 'startIndex:', startIndex, 'endIndex:', endIndex, 'maxVisible:', maxVisible);
+    
+    return apartments.slice(startIndex, endIndex);
+  };
+
+  const visibleApartments = getVisibleApartments();
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-      {apartments.map((apartment) => (
-        <div
-          key={apartment.id}
-          className="relative group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
-          onMouseEnter={() => setHoveredApartment(apartment.id)}
-          onMouseLeave={() => setHoveredApartment(null)}
-        >
+    <div className="overflow-hidden">
+      <div className="flex gap-2 sm:gap-3 md:gap-4 lg:gap-6 justify-start transition-all duration-300 ease-in-out">
+        {visibleApartments.map((apartment) => (
+          <div
+            key={apartment.id}
+            className="relative group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex-shrink-0 w-full sm:w-64 md:w-72 lg:w-80"
+            onMouseEnter={() => setHoveredApartment(apartment.id)}
+            onMouseLeave={() => setHoveredApartment(null)}
+          >
           {/* Apartment Image */}
           <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
             <img
@@ -76,8 +99,9 @@ const ApartmentsGrid = ({ apartments, isRegionMode }) => {
               </div>
             </div>
           </div>
-        </div>
-      ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
