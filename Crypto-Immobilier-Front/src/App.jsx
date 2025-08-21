@@ -2,6 +2,7 @@
 import NavBar from './components/Header/NavBar';
 import Hero from './components/Hero';
 import Description from './components/Description';
+import SellersSection from './components/SellersSection';
 import { HeroProvider } from './context/HeroContext';
 import { DescriptionProvider } from './context/DescriptionContext';
 
@@ -13,6 +14,7 @@ function App() {
           <NavBar />
           <Hero />
           <Description />
+          <SellersSection />
         </div>
       </DescriptionProvider>
     </HeroProvider>

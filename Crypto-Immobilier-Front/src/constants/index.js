@@ -47,9 +47,95 @@ export const DEFAULT_DESCRIPTION_CONTENT = {
   ]
 };
 
+// Default Sellers Section Content
+export const DEFAULT_SELLERS_CONTENT = {
+  // Available regions with their apartments
+  regions: [
+    {
+      id: "hydra",
+      name: "Hydra",
+      apartments: [
+        {
+          id: 1,
+          name: "Appartement 3chambres séjour",
+          image: "/assets/images/regions/hydra/Appartement-3chambres-séjour.png",
+          availability: "Available"
+        },
+        {
+          id: 2,
+          name: "Appartement Charmant",
+          image: "/assets/images/regions/hydra/Appartement-Charmant.png",
+          availability: "Available"
+        },
+        {
+          id: 3,
+          name: "Majestueux Appartement 2pièces",
+          image: "/assets/images/regions/hydra/Majestueux-Appartement-2pièces.png",
+          availability: "Unavailable"
+        },
+        {
+          id: 4,
+          name: "Somptueux appartement",
+          image: "/assets/images/regions/hydra/Somptueux-appartement.png",
+          availability: "Available"
+        }
+      ]
+    },
+    {
+      id: "bab-ezzouar",
+      name: "Bab Ezzouar",
+      apartments: [
+        {
+          id: 5,
+          name: "Appartement Bordj El Kiffan",
+          image: "/assets/images/regions/bbz/Appartement-Bordj-El-Kiffan-bbz.png",
+          availability: "Available"
+        },
+        {
+          id: 6,
+          name: "Appartement Draria",
+          image: "/assets/images/regions/bbz/Appartement-Draria-bbz.png",
+          availability: "Available"
+        },
+        {
+          id: 7,
+          name: "Au refuge de Nadia",
+          image: "/assets/images/regions/bbz/Au-refuge-de-Nadia-bbz.png",
+          availability: "Unavailable"
+        }
+      ]
+    },
+    {
+      id: "cheraga",
+      name: "Cheraga",
+      apartments: [
+        {
+          id: 8,
+          name: "Apartment bénimessous",
+          image: "/assets/images/regions/cheraga/Apartment-bénimessous1-cheraga.png",
+          availability: "Available"
+        },
+        {
+          id: 9,
+          name: "Appartement F4 Chraga",
+          image: "/assets/images/regions/cheraga/appartementF4-chraga.png",
+          availability: "Available"
+        },
+        {
+          id: 10,
+          name: "Sweet Home Chraga",
+          image: "/assets/images/regions/cheraga/sweetHome-Chraga.png",
+          availability: "Available"
+        }
+      ]
+    }
+  ]
+};
+
 // API Endpoints
 export const API_ENDPOINTS = {
   HERO_CONTENT: '/api/hero-content',
   DESCRIPTION_CONTENT: '/api/description-content',
+  SELLERS_CONTENT: '/api/sellers-content',
   // Add more endpoints here as needed
 };
