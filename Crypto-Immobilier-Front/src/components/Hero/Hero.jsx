@@ -53,22 +53,43 @@ import { useHero } from '../../hooks/useHero';
         </div>
       </div>
       
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <svg 
-          className="w-6 h-6 text-white opacity-80" 
-          fill="none" 
-          stroke="currentColor" 
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+      {/* Scroll indicator - clickable button */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Button clicked!'); // Debug log
+            const aboutSection = document.getElementById('about');
+            if (aboutSection) {
+              const navHeight = 80; // Height of the navbar
+              const elementPosition = aboutSection.offsetTop - navHeight;
+              
+              window.scrollTo({
+                top: elementPosition,
+                behavior: 'smooth'
+              });
+            }
+          }}
+          className="animate-bounce hover:scale-110 transition-transform duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 rounded-full p-4 bg-black bg-opacity-20 hover:bg-opacity-30"
+          aria-label="Scroll to About section"
+          type="button"
         >
-          <path 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            strokeWidth={2} 
-            d="M19 14l-7 7m0 0l-7-7m7 7V3" 
-          />
-        </svg>
+          <svg 
+            className="w-6 h-6 text-white opacity-80 hover:opacity-100 transition-opacity duration-300 pointer-events-none" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+            />
+          </svg>
+        </button>
       </div>
     </section>
   );
