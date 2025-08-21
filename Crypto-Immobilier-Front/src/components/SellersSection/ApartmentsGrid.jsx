@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 const ApartmentsGrid = ({ apartments, currentIndex }) => {
   const [hoveredApartment, setHoveredApartment] = useState(null);
   const [maxVisible, setMaxVisible] = useState(4);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [prevCurrentIndex, setPrevCurrentIndex] = useState(currentIndex);
 
   // Update maxVisible based on screen size
   useEffect(() => {
@@ -20,6 +22,21 @@ const ApartmentsGrid = ({ apartments, currentIndex }) => {
     window.addEventListener('resize', updateMaxVisible);
     return () => window.removeEventListener('resize', updateMaxVisible);
   }, []);
+
+  // Handle smooth transitions when currentIndex changes
+  useEffect(() => {
+    if (currentIndex !== prevCurrentIndex) {
+      setIsTransitioning(true);
+      setPrevCurrentIndex(currentIndex);
+      
+      // Reset transition state after animation completes
+      const timer = setTimeout(() => {
+        setIsTransitioning(false);
+      }, 600); // Match the fadeIn animation duration
+      
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, prevCurrentIndex]);
 
   if (!apartments || apartments.length === 0) {
     return (
@@ -39,8 +56,6 @@ const ApartmentsGrid = ({ apartments, currentIndex }) => {
     const startIndex = currentIndex;
     const endIndex = Math.min(startIndex + maxVisible, totalApartments);
     
-    console.log('Debug - currentIndex:', currentIndex, 'startIndex:', startIndex, 'endIndex:', endIndex, 'maxVisible:', maxVisible);
-    
     return apartments.slice(startIndex, endIndex);
   };
 
@@ -48,11 +63,21 @@ const ApartmentsGrid = ({ apartments, currentIndex }) => {
 
   return (
     <div className="overflow-hidden">
-      <div className="flex gap-2 sm:gap-3 md:gap-4 lg:gap-6 justify-start transition-all duration-300 ease-in-out">
-        {visibleApartments.map((apartment) => (
+      <div 
+        className={`flex gap-2 sm:gap-3 md:gap-4 lg:gap-6 justify-start transition-all duration-500 ease-in-out transform ${
+          isTransitioning ? 'animate-slideIn' : ''
+        }`}
+      >
+        {visibleApartments.map((apartment, index) => (
           <div
-            key={apartment.id}
-            className="relative group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex-shrink-0 w-full sm:w-64 md:w-72 lg:w-80"
+            key={`${apartment.id}-${currentIndex}`}
+            className={`relative group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-xl flex-shrink-0 w-full sm:w-64 md:w-72 lg:w-80 ${
+              isTransitioning ? 'opacity-0 animate-fadeIn' : 'opacity-100'
+            }`}
+            style={{
+              animationDelay: isTransitioning ? `${index * 120}ms` : '0ms',
+              animationFillMode: 'forwards'
+            }}
             onMouseEnter={() => setHoveredApartment(apartment.id)}
             onMouseLeave={() => setHoveredApartment(null)}
           >

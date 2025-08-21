@@ -16,7 +16,6 @@ const SellersSection = () => {
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
-      console.log('Previous clicked - new currentIndex:', currentIndex - 1);
     }
   };
 
@@ -26,7 +25,6 @@ const SellersSection = () => {
     const maxIndex = selectedRegion.apartments.length - 1;
     if (currentIndex < maxIndex) {
       setCurrentIndex(currentIndex + 1);
-      console.log('Next clicked - new currentIndex:', currentIndex + 1);
     }
   };
 
@@ -74,10 +72,10 @@ const SellersSection = () => {
           <button 
             onClick={handlePrevious}
             disabled={currentIndex === 0}
-            className={`w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center transition-colors ${
+            className={`w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center transition-all duration-300 transform ${
               currentIndex === 0 
                 ? 'opacity-50 cursor-not-allowed' 
-                : 'hover:bg-gray-50 hover:border-gray-400'
+                : 'hover:bg-gray-50 hover:border-gray-400 hover:scale-110 active:scale-95'
             }`}
           >
             <svg 
@@ -92,10 +90,10 @@ const SellersSection = () => {
           <button 
             onClick={handleNext}
             disabled={currentIndex >= selectedRegion.apartments.length - 1}
-            className={`w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center transition-colors ${
+            className={`w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center transition-all duration-300 transform ${
               currentIndex >= selectedRegion.apartments.length - 1
                 ? 'opacity-50 cursor-not-allowed' 
-                : 'hover:bg-gray-50 hover:border-gray-400'
+                : 'hover:bg-gray-50 hover:border-gray-400 hover:scale-110 active:scale-95'
             }`}
           >
             <svg 
