@@ -30,24 +30,23 @@ const ReservationForm = () => {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
           {/* Left Section - Logo and Info */}
           <div className="flex-1 lg:pr-8">
-            <div className="flex items-center mb-8">
+            <div className="flex items-center mb-12">
               <img 
                 src={Logo} 
                 alt="Crypto Immobilier Logo" 
                 className="w-16 h-16 mr-4"
               />
-              <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-800 font-inter leading-tight">
-                Reservation
-              </h2>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 font-inter leading-tight">
+  Reservation
+</h2>
             </div>
             
-            <div className="space-y-6">
-              <p className="text-gray-600 text-lg leading-relaxed">
-                We are committed to processing the information in order to 
-                contact you and talk about your project.
-              </p>
-              
-              <div className="space-y-4">
+            <p className="text-gray-600 text-lg leading-relaxed">
+              We are committed to processing the information in order to 
+              contact you and talk about your project.
+            </p>
+            
+            <div className="space-y-8 mt-10">
                 <div className="flex items-center">
                   <div className="w-6 h-6 mr-4 flex-shrink-0">
                     <svg className="w-full h-full text-blue-600" fill="currentColor" viewBox="0 0 20 20">
@@ -78,7 +77,6 @@ const ReservationForm = () => {
                   </div>
                   <span className="text-gray-700">+213 55 42 90 99 4</span>
                 </div>
-              </div>
             </div>
           </div>
 
@@ -146,7 +144,7 @@ const ReservationForm = () => {
               
               <button
                 type="submit"
-                className="w-full bg-blue-900 hover:bg-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 outline-none"
+                className="w-32 bg-blue-900 hover:bg-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 outline-none"
               >
                 Submit
               </button>
