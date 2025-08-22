@@ -4,8 +4,10 @@ import Hero from './components/Hero';
 import Description from './components/Description';
 import SellersSection from './components/SellersSection';
 import ReservationForm from './components/ReservationForm';
+import Footer from './components/Footer';
 import { HeroProvider } from './context/HeroContext';
 import { DescriptionProvider } from './context/DescriptionContext';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
 // Animation variants for sections
@@ -71,6 +73,17 @@ function App() {
             variants={sectionVariants}
           >
             <ReservationForm />
+          </motion.section>
+
+          {/* Footer Section */}
+          <motion.section
+            id="footer"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={sectionVariants}
+          >
+            <Footer />
           </motion.section>
         </div>
       </DescriptionProvider>
