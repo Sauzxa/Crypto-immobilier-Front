@@ -51,27 +51,27 @@ const Footer = () => {
             {/* Social Media Links */}
             <div className="mb-8">
               <h4 className="text-lg font-semibold mb-4">Social</h4>
-              <div className="flex space-x-6">
+              <div className="flex space-x-4">
                 <a 
                   href="#" 
                   className="hover:opacity-80 transition-opacity duration-200"
                   aria-label="Facebook"
                 >
-                  <img src={FacebookLogo} alt="Facebook" className="w-8 h-8" />
+                  <img src={FacebookLogo} alt="Facebook" className="w-6 h-6" />
                 </a>
                 <a 
                   href="#" 
                   className="hover:opacity-80 transition-opacity duration-200"
                   aria-label="Instagram"
                 >
-                  <img src={InstagramLogo} alt="Instagram" className="w-8 h-8" />
+                  <img src={InstagramLogo} alt="Instagram" className="w-6 h-6" />
                 </a>
                 <a 
                   href="#" 
                   className="hover:opacity-80 transition-opacity duration-200"
                   aria-label="Twitter"
                 >
-                  <img src={TwitterLogo} alt="Twitter" className="w-8 h-8" />
+                  <img src={TwitterLogo} alt="Twitter" className="w-6 h-6" />
                 </a>
               </div>
             </div>

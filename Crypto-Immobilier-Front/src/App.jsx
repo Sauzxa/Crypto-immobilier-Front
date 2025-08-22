@@ -24,6 +24,20 @@ const sectionVariants = {
   }
 };
 
+// Animation variants specifically for footer to avoid conflicts
+const footerVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 30,
+    transition: { duration: 0.4 }
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" }
+  }
+};
+
 function App() {
   return (
     <HeroProvider>
@@ -69,7 +83,7 @@ function App() {
             id="reservation"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: false, amount: 0.3, margin: "-100px" }}
             variants={sectionVariants}
           >
             <ReservationForm />
@@ -80,8 +94,8 @@ function App() {
             id="footer"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            variants={sectionVariants}
+            viewport={{ once: false, amount: 0.25, margin: "-100px" }}
+            variants={footerVariants}
           >
             <Footer />
           </motion.section>

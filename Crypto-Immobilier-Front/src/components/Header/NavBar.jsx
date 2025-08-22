@@ -18,13 +18,6 @@ const NavBar = () => {
 
   // Smooth scroll function
   const smoothScrollTo = (elementId) => {
-    // Special case for footer (not yet implemented)
-    if (elementId === 'footer') {
-      console.log('Footer section will be available after footer implementation');
-      setIsMobileMenuOpen(false);
-      return;
-    }
-    
     const element = document.getElementById(elementId);
     if (element) {
       const navHeight = 80; // Height of the navbar
@@ -44,7 +37,17 @@ const NavBar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const sections = navItems.map(item => item.id);
-      const scrollPosition = window.scrollY + 100; // Offset for navbar height
+      const scrollPosition = window.scrollY + 150; // Increased offset for better tracking
+
+      // Special handling for footer (if we're near the bottom)
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const isNearBottom = window.scrollY + windowHeight >= documentHeight - 50;
+      
+      if (isNearBottom) {
+        setActiveSection('footer');
+        return;
+      }
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i]);
