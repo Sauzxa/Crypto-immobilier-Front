@@ -83,7 +83,7 @@ function App() {
             id="reservation"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.3, margin: "-100px" }}
+            viewport={{ once: false, amount: 0.1, margin: "-50px" }}
             variants={sectionVariants}
           >
             <ReservationForm />

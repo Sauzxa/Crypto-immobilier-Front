@@ -80,7 +80,7 @@ const NavBar = () => {
   return (
     <nav className="absolute top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-20 relative">
           {/* Logo */}
           <div className="flex-shrink-0">
             <img 
@@ -116,7 +116,7 @@ const NavBar = () => {
           </div>
           
           {/* Right side - Language selector and toggle */}
-          <div className="flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-6">
             {/* Language Selector with Flag and Dropdown */}
             <div className="relative">
               <div 
@@ -217,8 +217,82 @@ const NavBar = () => {
             </div>
           </div>
           
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile menu button and controls */}
+          <div className="md:hidden flex items-center space-x-3">
+            {/* Language Selector for Mobile */}
+            <div className="relative">
+              <div 
+                className="flex items-center space-x-1 cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors duration-200"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                <img 
+                  src={selectedLanguage === 'en' ? "/assets/icons/english.png" : "/assets/icons/franch.png"} 
+                  alt={selectedLanguage === 'en' ? "English" : "French"} 
+                  className="w-5 h-3 rounded-sm"
+                />
+                <span className="text-xs font-medium text-gray-900 font-inter">
+                  {selectedLanguage === 'en' ? 'EN' : 'FR'}
+                </span>
+              </div>
+              
+              {/* Mobile Dropdown Menu */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-28 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                  <div className="py-1">
+                    <button
+                      onClick={() => handleLanguageChange('en')}
+                      className={`flex items-center space-x-2 w-full px-3 py-2 text-xs hover:bg-gray-100 transition-colors duration-200 ${
+                        selectedLanguage === 'en' ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                      }`}
+                    >
+                      <img 
+                        src="/assets/icons/english.png" 
+                        alt="English" 
+                        className="w-4 h-2 rounded-sm"
+                      />
+                      <span className="font-inter">EN</span>
+                    </button>
+                    <button
+                      onClick={() => handleLanguageChange('fr')}
+                      className={`flex items-center space-x-2 w-full px-3 py-2 text-xs hover:bg-gray-100 transition-colors duration-200 ${
+                        selectedLanguage === 'fr' ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                      }`}
+                    >
+                      <img 
+                        src="/assets/icons/franch.png" 
+                        alt="French" 
+                        className="w-4 h-2 rounded-sm"
+                      />
+                      <span className="font-inter">FR</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Theme Toggle for Mobile */}
+            <button
+              onClick={handleThemeToggle}
+              className={`relative inline-flex items-center w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                isDarkMode ? 'bg-blue-600' : 'bg-gray-200'
+              }`}
+            >
+              <div className={`absolute w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-300 ease-in-out flex items-center justify-center ${
+                isDarkMode ? 'translate-x-7' : 'translate-x-1'
+              }`}>
+                {isDarkMode ? (
+                  <svg className="w-2 h-2 text-blue-800" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                  </svg>
+                ) : (
+                  <svg className="w-2 h-2 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
+                  </svg>
+                )}
+              </div>
+            </button>
+
+            {/* Mobile Hamburger Menu Button */}
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
