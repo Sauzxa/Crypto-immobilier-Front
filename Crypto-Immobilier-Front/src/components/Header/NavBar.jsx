@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import Logo from '../../assets/images/logos/Logo.png';
+import EnglishFlag from '../../assets/icons/english.png';
+import FrenchFlag from '../../assets/icons/franch.png';
 
 // Navigation items with their corresponding section IDs
 const navItems = [
@@ -85,7 +88,7 @@ const NavBar = () => {
           <div className="flex-shrink-0">
             <img 
               className="h-14 w-auto" 
-              src="/assets/images/logos/Logo.png" 
+              src={Logo} 
               alt="Crypto Immobilier Logo" 
             />
           </div>
@@ -124,7 +127,7 @@ const NavBar = () => {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 <img 
-                  src={selectedLanguage === 'en' ? "/assets/icons/english.png" : "/assets/icons/franch.png"} 
+                  src={selectedLanguage === 'en' ? EnglishFlag : FrenchFlag} 
                   alt={selectedLanguage === 'en' ? "English" : "French"} 
                   className="w-6 h-4 rounded-sm"
                 />
@@ -152,7 +155,7 @@ const NavBar = () => {
                       }`}
                     >
                       <img 
-                        src="/assets/icons/english.png" 
+                        src={EnglishFlag} 
                         alt="English" 
                         className="w-5 h-3 rounded-sm"
                       />
@@ -165,7 +168,7 @@ const NavBar = () => {
                       }`}
                     >
                       <img 
-                        src="/assets/icons/franch.png" 
+                        src={FrenchFlag} 
                         alt="French" 
                         className="w-5 h-3 rounded-sm"
                       />
@@ -226,7 +229,7 @@ const NavBar = () => {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 <img 
-                  src={selectedLanguage === 'en' ? "/assets/icons/english.png" : "/assets/icons/franch.png"} 
+                  src={selectedLanguage === 'en' ? EnglishFlag : FrenchFlag} 
                   alt={selectedLanguage === 'en' ? "English" : "French"} 
                   className="w-5 h-3 rounded-sm"
                 />
@@ -246,7 +249,7 @@ const NavBar = () => {
                       }`}
                     >
                       <img 
-                        src="/assets/icons/english.png" 
+                        src={EnglishFlag} 
                         alt="English" 
                         className="w-4 h-2 rounded-sm"
                       />
@@ -259,7 +262,7 @@ const NavBar = () => {
                       }`}
                     >
                       <img 
-                        src="/assets/icons/franch.png" 
+                        src={FrenchFlag} 
                         alt="French" 
                         className="w-4 h-2 rounded-sm"
                       />

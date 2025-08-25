@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Logo from '../../../public/assets/images/logos/Logo.png';
+import Logo from '../../assets/images/logos/Logo.png';
 
 const ReservationForm = () => {
   const [formData, setFormData] = useState({

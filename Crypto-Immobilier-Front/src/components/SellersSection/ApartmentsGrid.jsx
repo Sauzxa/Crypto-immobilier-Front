@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Apartment1 from '../../assets/images/apartments/appartement1.png';
 
 const ApartmentsGrid = ({ apartments, currentIndex }) => {
   const [hoveredApartment, setHoveredApartment] = useState(null);
@@ -88,7 +89,7 @@ const ApartmentsGrid = ({ apartments, currentIndex }) => {
               alt={apartment.name}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               onError={(e) => {
-                e.target.src = '/assets/images/apartments/appartement1.png';
+                e.target.src = Apartment1;
               }}
             />
             

@@ -1,3 +1,24 @@
+import HeroImage from '../assets/images/HeroImage.png';
+import Apartment1 from '../assets/images/apartments/appartement1.png';
+import Apartment2 from '../assets/images/apartments/appartement2.png';
+import Apartment3 from '../assets/images/apartments/appartement3.png';
+
+// Region images - Hydra
+import HydraApt1 from '../assets/images/regions/hydra/Appartement-3chambres-séjour.png';
+import HydraApt2 from '../assets/images/regions/hydra/Appartement-Charmant.png';
+import HydraApt3 from '../assets/images/regions/hydra/Majestueux-Appartement-2pièces.png';
+import HydraApt4 from '../assets/images/regions/hydra/Somptueux-appartement.png';
+
+// Region images - Bab Ezzouar
+import BbzApt1 from '../assets/images/regions/bbz/Appartement-Bordj-El-Kiffan-bbz.png';
+import BbzApt2 from '../assets/images/regions/bbz/Appartement-Draria-bbz.png';
+import BbzApt3 from '../assets/images/regions/bbz/Au-refuge-de-Nadia-bbz.png';
+
+// Region images - Cheraga
+import CheragaApt1 from '../assets/images/regions/cheraga/Apartment-bénimessous1-cheraga.png';
+import CheragaApt2 from '../assets/images/regions/cheraga/appartementF4-chraga.png';
+import CheragaApt3 from '../assets/images/regions/cheraga/sweetHome-Chraga.png';
+
 // Default Hero Section Content
 export const DEFAULT_HERO_CONTENT = {
   title: "CHOSE. YOUR. OWN. HOME.",
@@ -15,7 +36,7 @@ export const DEFAULT_HERO_CONTENT = {
       label: "Days to Close a Deal"
     }
   ],
-  backgroundImage: "/assets/images/HeroImage.png"
+  backgroundImage: HeroImage
 };
 
 // Default Description Section Content
@@ -27,21 +48,21 @@ export const DEFAULT_DESCRIPTION_CONTENT = {
       id: 1,
       price: "DZD 34,100",
       period: "F3 | Per Month",
-      image: "/assets/images/apartments/appartement1.png",
+      image: Apartment1,
       zIndex: 30
     },
     {
       id: 2,
       price: "DZD 45,800",
       period: "F4 | Per Month", 
-      image: "/assets/images/apartments/appartement2.png",
+      image: Apartment2,
       zIndex: 20
     },
     {
       id: 3,
       price: "DZD 28,500",
       period: "F2 | Per Month",
-      image: "/assets/images/apartments/appartement3.png",
+      image: Apartment3,
       zIndex: 10
     }
   ]
@@ -58,25 +79,25 @@ export const DEFAULT_SELLERS_CONTENT = {
         {
           id: 1,
           name: "Appartement 3chambres séjour",
-          image: "/assets/images/regions/hydra/Appartement-3chambres-séjour.png",
+          image: HydraApt1,
           availability: "Available"
         },
         {
           id: 2,
           name: "Appartement Charmant",
-          image: "/assets/images/regions/hydra/Appartement-Charmant.png",
+          image: HydraApt2,
           availability: "Available"
         },
         {
           id: 3,
           name: "Majestueux Appartement 2pièces",
-          image: "/assets/images/regions/hydra/Majestueux-Appartement-2pièces.png",
+          image: HydraApt3,
           availability: "Unavailable"
         },
         {
           id: 4,
           name: "Somptueux appartement",
-          image: "/assets/images/regions/hydra/Somptueux-appartement.png",
+          image: HydraApt4,
           availability: "Available"
         }
       ]
@@ -88,19 +109,19 @@ export const DEFAULT_SELLERS_CONTENT = {
         {
           id: 5,
           name: "Appartement Bordj El Kiffan",
-          image: "/assets/images/regions/bbz/Appartement-Bordj-El-Kiffan-bbz.png",
+          image: BbzApt1,
           availability: "Available"
         },
         {
           id: 6,
           name: "Appartement Draria",
-          image: "/assets/images/regions/bbz/Appartement-Draria-bbz.png",
+          image: BbzApt2,
           availability: "Available"
         },
         {
           id: 7,
           name: "Au refuge de Nadia",
-          image: "/assets/images/regions/bbz/Au-refuge-de-Nadia-bbz.png",
+          image: BbzApt3,
           availability: "Unavailable"
         }
       ]
@@ -112,19 +133,19 @@ export const DEFAULT_SELLERS_CONTENT = {
         {
           id: 8,
           name: "Apartment bénimessous",
-          image: "/assets/images/regions/cheraga/Apartment-bénimessous1-cheraga.png",
+          image: CheragaApt1,
           availability: "Available"
         },
         {
           id: 9,
           name: "Appartement F4 Chraga",
-          image: "/assets/images/regions/cheraga/appartementF4-chraga.png",
+          image: CheragaApt2,
           availability: "Available"
         },
         {
           id: 10,
           name: "Sweet Home Chraga",
-          image: "/assets/images/regions/cheraga/sweetHome-Chraga.png",
+          image: CheragaApt3,
           availability: "Available"
         }
       ]
@@ -137,5 +158,6 @@ export const API_ENDPOINTS = {
   HERO_CONTENT: '/api/hero-content',
   DESCRIPTION_CONTENT: '/api/description-content',
   SELLERS_CONTENT: '/api/sellers-content',
+  HERO_SECTION_NUMBERS: 'http://localhost:5000/api/hero-section-numbers',
   // Add more endpoints here as needed
 };

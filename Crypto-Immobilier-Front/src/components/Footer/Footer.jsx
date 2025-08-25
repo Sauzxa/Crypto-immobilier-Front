@@ -1,8 +1,8 @@
 import React from 'react';
-import FooterLogo from '../../../public/assets/images/logos/FooterLogo.png';
-import FacebookLogo from '../../../public/assets/images/logos/facebookLogo.png';
-import InstagramLogo from '../../../public/assets/images/logos/instagram-logo.png';
-import TwitterLogo from '../../../public/assets/images/logos/twitterLogo.png';
+import FooterLogo from '../../assets/images/logos/FooterLogo.png';
+import FacebookLogo from '../../assets/images/logos/facebookLogo.png';
+import InstagramLogo from '../../assets/images/logos/instagram-logo.png';
+import TwitterLogo from '../../assets/images/logos/twitterLogo.png';
 
 const Footer = () => {
   // Google Maps location for Bd de l'Université, Bab Ezzouar

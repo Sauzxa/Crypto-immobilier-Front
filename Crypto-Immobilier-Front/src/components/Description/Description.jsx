@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDescription } from '../../hooks/useDescription';
+import Apartment1 from '../../assets/images/apartments/appartement1.png';
 
 const Description = () => {
   const { descriptionContent, loading, error } = useDescription();
@@ -64,7 +65,7 @@ const Description = () => {
                       alt={`Apartment ${apartment.id}`}
                       className={`w-full h-full object-cover transition-transform duration-300 ${isHovered ? 'scale-110' : 'scale-100'}`}
                       onError={(e) => {
-                        e.target.src = '/assets/images/apartments/appartement1.png';
+                        e.target.src = Apartment1;
                       }}
                     />
                   </div>

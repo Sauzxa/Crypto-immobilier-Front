@@ -67,8 +67,27 @@ export const descriptionAPI = {
   },
 };
 
+// Hero section numbers specific API calls
+export const heroSectionNumbersAPI = {
+  // Get hero section numbers
+  getHeroSectionNumbers: () => {
+    return apiCall(API_ENDPOINTS.HERO_SECTION_NUMBERS, {
+      method: 'GET',
+    });
+  },
+
+  // Update hero section numbers
+  updateHeroSectionNumbers: (numbers) => {
+    return apiCall(API_ENDPOINTS.HERO_SECTION_NUMBERS, {
+      method: 'PUT',
+      body: JSON.stringify(numbers),
+    });
+  },
+};
+
 export default {
   apiCall,
   heroAPI,
   descriptionAPI,
+  heroSectionNumbersAPI,
 };
