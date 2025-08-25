@@ -48,14 +48,12 @@ const ReservationForm = () => {
         const typeNames = data.data.map(type => type.name);
         setApartmentTypes(typeNames);
       } else {
-        setError('Failed to load apartment types');
-        // Fallback to static types if API fails
+        // Silently fallback to static types if API fails
         setApartmentTypes(['Studio', 'F1', 'F2', 'F3', 'F4', 'F5', 'Duplex', 'Villa']);
       }
     } catch (err) {
       console.error('Error fetching apartment types:', err);
-      setError('Error loading apartment types. Using default options.');
-      // Fallback to static types if API fails
+      // Silently fallback to static types if API fails
       setApartmentTypes(['Studio', 'F1', 'F2', 'F3', 'F4', 'F5', 'Duplex', 'Villa']);
     } finally {
       setLoadingTypes(false);
@@ -118,10 +116,10 @@ const ReservationForm = () => {
           message: ''
         });
       } else {
-        setError(data.error?.message || 'Failed to submit reservation');
+        setError('Unable to submit your reservation. Please check your information and try again.');
       }
     } catch (err) {
-      setError('Error connecting to server. Please try again.');
+      setError('Unable to submit your reservation at the moment. Please try again later.');
       console.error('Error submitting reservation:', err);
     } finally {
       setSubmitLoading(false);
