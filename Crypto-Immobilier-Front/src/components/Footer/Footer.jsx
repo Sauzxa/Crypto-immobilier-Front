@@ -50,7 +50,7 @@ const Footer = () => {
               <h4 className="text-lg font-semibold mb-4">Social</h4>
               <div className="flex space-x-6">
                 <a 
-                  target='_blank'
+                target='_blank'
                   href="https://www.facebook.com/profile.php?id=61557069279440&mibextid=ZbWKwL" 
                   className="hover:opacity-80 transition-opacity duration-200"
                   aria-label="Facebook"
