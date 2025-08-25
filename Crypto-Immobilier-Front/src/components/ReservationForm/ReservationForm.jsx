@@ -1,14 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Logo from '../../assets/images/logos/Logo.png';
 
 const ReservationForm = () => {
   const [formData, setFormData] = useState({
-    location: '',
     name: '',
-    email: '',
     number: '',
+    reservationDate: '',
+    typeAppartement: '',
     message: ''
   });
+
+  const [apartmentTypes, setApartmentTypes] = useState([]);
+  const [loadingTypes, setLoadingTypes] = useState(true);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  // Fetch apartment types from database on component mount
+  useEffect(() => {
+    fetchApartmentTypes();
+  }, []);
+
+  const fetchApartmentTypes = async () => {
+    try {
+      setLoadingTypes(true);
+      const response = await fetch('http://localhost:8000/api/apartment-types');
+      const data = await response.json();
+      
+      if (data.success && data.data) {
+        // Extract just the names from the apartment type objects
+        const typeNames = data.data.map(type => type.name);
+        setApartmentTypes(typeNames);
+      } else {
+        setError('Failed to load apartment types');
+        // Fallback to static types if API fails
+        setApartmentTypes(['Studio', 'F1', 'F2', 'F3', 'F4', 'F5', 'Duplex', 'Villa']);
+      }
+    } catch (err) {
+      console.error('Error fetching apartment types:', err);
+      setError('Error loading apartment types. Using default options.');
+      // Fallback to static types if API fails
+      setApartmentTypes(['Studio', 'F1', 'F2', 'F3', 'F4', 'F5', 'Duplex', 'Villa']);
+    } finally {
+      setLoadingTypes(false);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -16,12 +52,47 @@ const ReservationForm = () => {
       ...prev,
       [name]: value
     }));
+    // Clear error message when user starts typing
+    if (error) setError('');
+    if (success) setSuccess('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    setSubmitLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const response = await fetch('http://localhost:8000/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSuccess('Reservation submitted successfully! We will contact you soon.');
+        // Reset form
+        setFormData({
+          name: '',
+          number: '',
+          reservationDate: '',
+          typeAppartement: '',
+          message: ''
+        });
+      } else {
+        setError(data.error?.message || 'Failed to submit reservation');
+      }
+    } catch (err) {
+      setError('Error connecting to server. Please try again.');
+      console.error('Error submitting reservation:', err);
+    } finally {
+      setSubmitLoading(false);
+    }
   };
 
   return (
@@ -82,19 +153,21 @@ const ReservationForm = () => {
 
           {/* Right Section - Form */}
           <div className="flex-1">
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-              <div>
-                <input
-                  type="text"
-                  name="location"
-                  placeholder="Location*"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white text-sm sm:text-base"
-                />
+            {/* Error and Success Messages */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                {error}
               </div>
-              
+            )}
+            
+            {success && (
+              <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                {success}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              {/* Name Field */}
               <div>
                 <input
                   type="text"
@@ -107,23 +180,12 @@ const ReservationForm = () => {
                 />
               </div>
               
-              <div>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="email*"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white text-sm sm:text-base"
-                />
-              </div>
-              
+              {/* Phone Number Field */}
               <div>
                 <input
                   type="tel"
                   name="number"
-                  placeholder="number*"
+                  placeholder="Phone Number*"
                   value={formData.number}
                   onChange={handleInputChange}
                   required
@@ -131,22 +193,63 @@ const ReservationForm = () => {
                 />
               </div>
               
+              {/* Reservation Date Field */}
+              <div>
+                <input
+                  type="date"
+                  name="reservationDate"
+                  value={formData.reservationDate}
+                  onChange={handleInputChange}
+                  required
+                  min={new Date().toISOString().split('T')[0]} // Prevent past dates
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white text-sm sm:text-base"
+                />
+              </div>
+              
+              {/* Apartment Type Dropdown */}
+              <div>
+                <select
+                  name="typeAppartement"
+                  value={formData.typeAppartement}
+                  onChange={handleInputChange}
+                  required
+                  disabled={loadingTypes}
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white text-sm sm:text-base"
+                >
+                  <option value="">
+                    {loadingTypes ? 'Loading apartment types...' : 'Select Apartment Type*'}
+                  </option>
+                  {apartmentTypes.map((type, index) => (
+                    <option key={index} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              {/* Message Field (Optional) */}
               <div>
                 <textarea
                   name="message"
-                  placeholder="Message"
+                  placeholder="Message (Optional)"
                   value={formData.message}
                   onChange={handleInputChange}
-                  rows={5}
+                  rows={4}
                   className="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white resize-none text-sm sm:text-base"
                 />
               </div>
               
+              {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full sm:w-32 bg-blue-900 hover:bg-blue-800 text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 outline-none text-sm sm:text-base"
+                disabled={submitLoading}
+                className={`w-full sm:w-32 font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 outline-none text-sm sm:text-base ${
+                  submitLoading
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-blue-900 hover:bg-blue-800 text-white'
+                }`}
               >
-                Submit
+                {submitLoading ? 'Submitting...' : 'Submit'}
               </button>
             </form>
           </div>
