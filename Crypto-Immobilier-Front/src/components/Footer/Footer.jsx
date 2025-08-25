@@ -2,7 +2,6 @@ import React from 'react';
 import FooterLogo from '../../assets/images/logos/FooterLogo.png';
 import FacebookLogo from '../../assets/images/logos/facebookLogo.png';
 import InstagramLogo from '../../assets/images/logos/instagram-logo.png';
-import TwitterLogo from '../../assets/images/logos/twitterLogo.png';
 
 const Footer = () => {
   // Google Maps location for La Promotion Immobilière Crypto
@@ -34,7 +33,7 @@ const Footer = () => {
               <img 
                 src={FooterLogo} 
                 alt="Crypto Immobilier Logo" 
-                className="w-16 h-16 mr-4"
+                className="w-16 h-auto mr-4 object-contain"
               />
               <h3 className="text-xl font-bold font-inter">
                 CRYPTO<br />IMMOBILIER
@@ -51,26 +50,20 @@ const Footer = () => {
               <h4 className="text-lg font-semibold mb-4">Social</h4>
               <div className="flex space-x-6">
                 <a 
-                target='_blank'
+                  target='_blank'
                   href="https://www.facebook.com/profile.php?id=61557069279440&mibextid=ZbWKwL" 
                   className="hover:opacity-80 transition-opacity duration-200"
                   aria-label="Facebook"
                 >
-                  <img src={FacebookLogo} alt="Facebook" className="w-5 h-5" />
+                  <img src={FacebookLogo} alt="Facebook" className="w-6 h-6 object-contain" />
                 </a>
                 <a 
-                  href="#" 
+                  target='_blank'
+                  href="https://www.instagram.com/younes_tyb" 
                   className="hover:opacity-80 transition-opacity duration-200"
                   aria-label="Instagram"
                 >
-                  <img src={InstagramLogo} alt="Instagram" className="w-5 h-5" />
-                </a>
-                <a 
-                  href="#" 
-                  className="hover:opacity-80 transition-opacity duration-200"
-                  aria-label="Twitter"
-                >
-                  <img src={TwitterLogo} alt="Twitter" className="w-5 h-5" />
+                  <img src={InstagramLogo} alt="Instagram" className="w-6 h-6 object-contain" />
                 </a>
               </div>
             </div>
