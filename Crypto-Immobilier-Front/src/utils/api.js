@@ -85,9 +85,31 @@ export const heroSectionNumbersAPI = {
   },
 };
 
+// Dashboard divs specific API calls
+export const dashboardAPI = {
+  // Get all dashboard divs
+  getDashboardDivs: () => {
+    return apiCall(API_ENDPOINTS.DASHBOARD_DIVS, {
+      method: 'GET',
+    });
+  },
+};
+
+// Best sellers regions specific API calls
+export const bestSellersAPI = {
+  // Get all regions with apartments
+  getRegions: () => {
+    return apiCall(API_ENDPOINTS.BESTSELLERS_REGIONS, {
+      method: 'GET',
+    });
+  },
+};
+
 export default {
   apiCall,
   heroAPI,
   descriptionAPI,
   heroSectionNumbersAPI,
+  dashboardAPI,
+  bestSellersAPI,
 };

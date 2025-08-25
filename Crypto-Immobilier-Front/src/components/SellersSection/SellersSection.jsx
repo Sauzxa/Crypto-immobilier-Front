@@ -1,12 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DEFAULT_SELLERS_CONTENT } from '../../constants';
+import { bestSellersAPI } from '../../utils/api';
 import RegionSelector from './RegionSelector';
 import ApartmentsGrid from './ApartmentsGrid';
 
 const SellersSection = () => {
-  const [sellersData] = useState(DEFAULT_SELLERS_CONTENT);
-  const [selectedRegion, setSelectedRegion] = useState(sellersData.regions[0]); // Default to first region (Hydra)
+  const [sellersData, setSellersData] = useState(DEFAULT_SELLERS_CONTENT);
+  const [selectedRegion, setSelectedRegion] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch regions data from API
+  useEffect(() => {
+    const fetchRegions = async () => {
+      try {
+        setLoading(true);
+        const response = await bestSellersAPI.getRegions();
+        
+        if (response.success && response.data && response.data.length > 0) {
+          // Transform API data to match component structure
+          const transformedData = {
+            regions: response.data.map(region => ({
+              id: region.id,
+              name: region.name,
+              apartments: (region.apartments || []).map(apartment => ({
+                id: apartment.id,
+                name: apartment.description || 'Apartment',
+                image: apartment.imageUrl,
+                availability: 'Available', // Default status
+                types: apartment.types || []
+              }))
+            }))
+          };
+          
+          setSellersData(transformedData);
+          setSelectedRegion(transformedData.regions[0]); // Set first region as default
+        } else {
+          // Use default data if no regions found
+          setSellersData(DEFAULT_SELLERS_CONTENT);
+          setSelectedRegion(DEFAULT_SELLERS_CONTENT.regions[0]);
+        }
+      } catch (err) {
+        console.error('Error fetching regions:', err);
+        setError(err.message);
+        // Use default data on error
+        setSellersData(DEFAULT_SELLERS_CONTENT);
+        setSelectedRegion(DEFAULT_SELLERS_CONTENT.regions[0]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRegions();
+  }, []);
 
   const handleRegionChange = (region) => {
     setSelectedRegion(region);
@@ -22,13 +69,44 @@ const SellersSection = () => {
   const handleNext = () => {
     // For scrollbar behavior: we can move forward as long as there are more apartments beyond the current view
     // The maximum currentIndex should be such that we can still show at least one apartment
-    const maxIndex = selectedRegion.apartments.length - 1;
-    if (currentIndex < maxIndex) {
-      setCurrentIndex(currentIndex + 1);
+    if (selectedRegion && selectedRegion.apartments) {
+      const maxIndex = selectedRegion.apartments.length - 1;
+      if (currentIndex < maxIndex) {
+        setCurrentIndex(currentIndex + 1);
+      }
     }
   };
 
+  // Show loading state
+  if (loading) {
+    return (
+      <section className="py-16 bg-gray-50 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="flex items-center justify-center">
+            <div className="text-gray-600 font-inter text-lg">Loading regions...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
+  // Show error state but still render with default content
+  if (error) {
+    console.error('Sellers section error:', error);
+  }
+
+  // Don't render if no selected region
+  if (!selectedRegion) {
+    return (
+      <section className="py-16 bg-gray-50 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="flex items-center justify-center">
+            <div className="text-gray-600 font-inter text-lg">No regions available</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 bg-gray-50 relative">
@@ -61,7 +139,7 @@ const SellersSection = () => {
           {/* Right Column - Apartments Grid */}
           <div className="flex-1 lg:w-2/3 overflow-x-auto">
             <ApartmentsGrid
-              apartments={selectedRegion.apartments}
+              apartments={selectedRegion?.apartments || []}
               currentIndex={currentIndex}
             />
           </div>
@@ -89,9 +167,9 @@ const SellersSection = () => {
           </button>
           <button 
             onClick={handleNext}
-            disabled={currentIndex >= selectedRegion.apartments.length - 1}
+            disabled={!selectedRegion || !selectedRegion.apartments || currentIndex >= selectedRegion.apartments.length - 1}
             className={`w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center transition-all duration-300 transform ${
-              currentIndex >= selectedRegion.apartments.length - 1
+              !selectedRegion || !selectedRegion.apartments || currentIndex >= selectedRegion.apartments.length - 1
                 ? 'opacity-50 cursor-not-allowed' 
                 : 'hover:bg-gray-50 hover:border-gray-400 hover:scale-110 active:scale-95'
             }`}

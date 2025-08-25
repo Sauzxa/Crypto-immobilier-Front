@@ -86,7 +86,7 @@ const ApartmentsGrid = ({ apartments, currentIndex }) => {
           <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
             <img
               src={apartment.image}
-              alt={apartment.name}
+              alt={apartment.name || 'Apartment'}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               onError={(e) => {
                 e.target.src = Apartment1;
@@ -96,7 +96,7 @@ const ApartmentsGrid = ({ apartments, currentIndex }) => {
             {/* Region Label - Top Right */}
             <div className="absolute top-4 right-4 bg-white bg-opacity-95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg">
               <span className="text-xs font-inter font-bold text-gray-800 uppercase tracking-wide">
-                {apartment.name.split(' ')[0]}
+                {apartment.name ? apartment.name.split(' ')[0] : 'Apartment'}
               </span>
             </div>
 
@@ -108,18 +108,18 @@ const ApartmentsGrid = ({ apartments, currentIndex }) => {
                 hoveredApartment === apartment.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
               }`}>
                 <h3 className="text-lg md:text-xl font-inter font-bold mb-3 leading-tight">
-                  {apartment.name}
+                  {apartment.name || 'Apartment'}
                 </h3>
                 <div className="flex items-center justify-center gap-3">
                   <div 
                     className={`w-3 h-3 rounded-full ${
-                      apartment.availability === 'Available' 
+                      (apartment.availability || apartment.status) === 'Available' 
                         ? 'bg-green-400 animate-pulse' 
                         : 'bg-red-400'
                     }`}
                   />
                   <span className="text-sm md:text-base font-inter font-medium">
-                    {apartment.availability}
+                    {apartment.availability || apartment.status || 'Available'}
                   </span>
                 </div>
               </div>

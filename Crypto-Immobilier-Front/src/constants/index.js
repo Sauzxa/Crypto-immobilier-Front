@@ -158,6 +158,8 @@ export const API_ENDPOINTS = {
   HERO_CONTENT: '/api/hero-content',
   DESCRIPTION_CONTENT: '/api/description-content',
   SELLERS_CONTENT: '/api/sellers-content',
-  HERO_SECTION_NUMBERS: 'http://localhost:5000/api/hero-section-numbers',
+  HERO_SECTION_NUMBERS: 'http://localhost:8000/api/hero-section-numbers',
+  DASHBOARD_DIVS: 'http://localhost:8000/api/dashboard/divs',
+  BESTSELLERS_REGIONS: 'http://localhost:8000/api/bestsellers/regions',
   // Add more endpoints here as needed
 };
