@@ -16,11 +16,26 @@ const ReservationForm = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [dropdownRef, setDropdownRef] = useState(null);
 
   // Fetch apartment types from database on component mount
   useEffect(() => {
     fetchApartmentTypes();
   }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef && !dropdownRef.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   const fetchApartmentTypes = async () => {
     try {
@@ -56,6 +71,23 @@ const ReservationForm = () => {
     // Clear error message when user starts typing
     if (error) setError('');
     if (success) setSuccess('');
+  };
+
+  const handleApartmentTypeSelect = (type) => {
+    setFormData(prev => ({
+      ...prev,
+      typeAppartement: type
+    }));
+    setIsDropdownOpen(false);
+    // Clear error message when user selects
+    if (error) setError('');
+    if (success) setSuccess('');
+  };
+
+  const toggleDropdown = () => {
+    if (!loadingTypes) {
+      setIsDropdownOpen(!isDropdownOpen);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -207,68 +239,104 @@ const ReservationForm = () => {
                 />
               </div>
               
-              {/* Apartment Type Dropdown */}
-              <div className="relative">
-                <select
+              {/* Custom Apartment Type Dropdown */}
+              <div className="relative" ref={setDropdownRef}>
+                {/* Hidden input for form validation */}
+                <input
+                  type="hidden"
                   name="typeAppartement"
                   value={formData.typeAppartement}
-                  onChange={handleInputChange}
-                  onFocus={() => setIsDropdownOpen(true)}
-                  onBlur={() => setIsDropdownOpen(false)}
                   required
-                  disabled={loadingTypes}
-                  className={`w-full px-3 py-2 sm:px-4 sm:py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white text-sm sm:text-base appearance-none cursor-pointer hover:border-gray-400 ${
+                />
+                {/* Dropdown Button */}
+                <div
+                  onClick={toggleDropdown}
+                  className={`w-full px-3 py-2 sm:px-4 sm:py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white text-sm sm:text-base cursor-pointer hover:border-gray-400 ${
                     loadingTypes ? 'cursor-not-allowed opacity-70' : ''
                   } ${
                     !formData.typeAppartement ? 'text-gray-400' : 'text-gray-900'
+                  } ${
+                    isDropdownOpen ? 'ring-2 ring-blue-500 border-transparent' : ''
                   }`}
-                  style={{
-                    WebkitAppearance: 'none',
-                    MozAppearance: 'none',
-                    msAppearance: 'none',
-                    backgroundImage: 'none'
-                  }}
                 >
-                  <option value="" disabled hidden style={{ backgroundColor: '#ffffff', color: '#9ca3af' }}>
-                    {loadingTypes ? 'Loading apartment types...' : 'Select Apartment Type*'}
-                  </option>
-                  {apartmentTypes.map((type, index) => (
-                    <option 
-                      key={index} 
-                      value={type} 
-                      style={{ 
-                        backgroundColor: '#ffffff',
-                        color: '#111827',
-                        padding: '8px 12px',
-                        borderRadius: '0px'
-                      }}
-                    >
-                      {type}
-                    </option>
-                  ))}
-                </select>
-                
-                {/* Custom dropdown arrow with rotation */}
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg
-                    className={`h-5 w-5 transition-all duration-200 ${
-                      loadingTypes ? 'text-gray-300' : 'text-gray-400'
-                    } ${
-                      isDropdownOpen ? 'rotate-180' : 'rotate-0'
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
+                  <span className="block truncate">
+                    {loadingTypes 
+                      ? 'Loading apartment types...' 
+                      : formData.typeAppartement || 'Select Apartment Type*'
+                    }
+                  </span>
                 </div>
+                
+                {/* Dropdown Arrow */}
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  {loadingTypes ? (
+                    <div className="animate-spin h-4 w-4 border-2 border-gray-300 border-t-blue-500 rounded-full"></div>
+                  ) : (
+                    <svg
+                      className={`h-5 w-5 transition-all duration-200 text-gray-400 ${
+                        isDropdownOpen ? 'rotate-180' : 'rotate-0'
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  )}
+                </div>
+
+                {/* Dropdown Menu */}
+                {isDropdownOpen && !loadingTypes && apartmentTypes.length > 0 && (
+                  <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+                    {apartmentTypes.map((type, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleApartmentTypeSelect(type)}
+                        className={`px-3 py-2 sm:px-4 sm:py-3 cursor-pointer text-sm sm:text-base transition-all duration-150 hover:bg-blue-50 hover:text-blue-700 ${
+                          formData.typeAppartement === type 
+                            ? 'bg-blue-100 text-blue-700 font-medium' 
+                            : 'text-gray-900 hover:bg-gray-50'
+                        } ${
+                          index === 0 ? 'rounded-t-lg' : ''
+                        } ${
+                          index === apartmentTypes.length - 1 ? 'rounded-b-lg' : 'border-b border-gray-100'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="block truncate">{type}</span>
+                          {formData.typeAppartement === type && (
+                            <svg
+                              className="h-4 w-4 text-blue-600"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Empty State */}
+                {isDropdownOpen && !loadingTypes && apartmentTypes.length === 0 && (
+                  <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+                    <div className="px-3 py-2 sm:px-4 sm:py-3 text-sm sm:text-base text-gray-500 text-center">
+                      No apartment types available
+                    </div>
+                  </div>
+                )}
               </div>
               
               {/* Message Field (Optional) */}
