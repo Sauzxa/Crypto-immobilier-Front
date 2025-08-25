@@ -126,7 +126,7 @@ const ReservationForm = () => {
                       <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
                     </svg>
                   </div>
-                  <span className="text-gray-700 text-sm sm:text-base break-all">example@CryptoImmobilier.com</span>
+                  <span className="text-gray-700 text-sm sm:text-base break-all">crypto.immobilier@gmail.com</span>
                 </div>
                 
                 <div className="flex items-start">

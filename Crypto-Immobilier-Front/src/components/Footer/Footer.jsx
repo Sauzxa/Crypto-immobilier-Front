@@ -5,19 +5,19 @@ import InstagramLogo from '../../assets/images/logos/instagram-logo.png';
 import TwitterLogo from '../../assets/images/logos/twitterLogo.png';
 
 const Footer = () => {
-  // Google Maps location for Bd de l'Université, Bab Ezzouar
+  // Google Maps location for La Promotion Immobilière Crypto
   const GoogleMapsEmbed = () => {
     return (
       <div className="w-full h-64 rounded-lg overflow-hidden shadow-lg">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3196.5649264147655!2d3.1801514!3d36.7170212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128e518cdf9d7681%3A0x9e8454a6da7ca16c!2sBd%20de%20l'Universit%C3%A9%2C%20Bab%20Ezzouar!5e0!3m2!1sen!2sus!4v1625654321123!5m2!1sen!2sus"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3196.3!2d3.1922852!3d36.7427417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128e4fe4aea58f3b%3A0x31348273cd3ae100!2sla%20promotion%20immobili%C3%A8re%20crypto!5e0!3m2!1sen!2sus!4v1625654321123!5m2!1sen!2sus"
           width="100%"
           height="100%"
           style={{ border: 0 }}
           allowFullScreen=""
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          title="Crypto Immobilier Location"
+          title="La Promotion Immobilière Crypto Location"
         />
       </div>
     );
@@ -51,7 +51,8 @@ const Footer = () => {
               <h4 className="text-lg font-semibold mb-4">Social</h4>
               <div className="flex space-x-6">
                 <a 
-                  href="#" 
+                target='_blank'
+                  href="https://www.facebook.com/profile.php?id=61557069279440&mibextid=ZbWKwL" 
                   className="hover:opacity-80 transition-opacity duration-200"
                   aria-label="Facebook"
                 >
