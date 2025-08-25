@@ -15,6 +15,7 @@ const ReservationForm = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Fetch apartment types from database on component mount
   useEffect(() => {
@@ -207,24 +208,67 @@ const ReservationForm = () => {
               </div>
               
               {/* Apartment Type Dropdown */}
-              <div>
+              <div className="relative">
                 <select
                   name="typeAppartement"
                   value={formData.typeAppartement}
                   onChange={handleInputChange}
+                  onFocus={() => setIsDropdownOpen(true)}
+                  onBlur={() => setIsDropdownOpen(false)}
                   required
                   disabled={loadingTypes}
-                  className="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white text-sm sm:text-base"
+                  className={`w-full px-3 py-2 sm:px-4 sm:py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 bg-white text-sm sm:text-base appearance-none cursor-pointer hover:border-gray-400 ${
+                    loadingTypes ? 'cursor-not-allowed opacity-70' : ''
+                  } ${
+                    !formData.typeAppartement ? 'text-gray-400' : 'text-gray-900'
+                  }`}
+                  style={{
+                    WebkitAppearance: 'none',
+                    MozAppearance: 'none',
+                    msAppearance: 'none',
+                    backgroundImage: 'none'
+                  }}
                 >
-                  <option value="">
+                  <option value="" disabled hidden style={{ backgroundColor: '#ffffff', color: '#9ca3af' }}>
                     {loadingTypes ? 'Loading apartment types...' : 'Select Apartment Type*'}
                   </option>
                   {apartmentTypes.map((type, index) => (
-                    <option key={index} value={type}>
+                    <option 
+                      key={index} 
+                      value={type} 
+                      style={{ 
+                        backgroundColor: '#ffffff',
+                        color: '#111827',
+                        padding: '8px 12px',
+                        borderRadius: '0px'
+                      }}
+                    >
                       {type}
                     </option>
                   ))}
                 </select>
+                
+                {/* Custom dropdown arrow with rotation */}
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg
+                    className={`h-5 w-5 transition-all duration-200 ${
+                      loadingTypes ? 'text-gray-300' : 'text-gray-400'
+                    } ${
+                      isDropdownOpen ? 'rotate-180' : 'rotate-0'
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
               </div>
               
               {/* Message Field (Optional) */}
