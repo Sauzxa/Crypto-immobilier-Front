@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Logo from '../../assets/images/logos/Logo.png';
 import EnglishFlag from '../../assets/icons/english.png';
 import FrenchFlag from '../../assets/icons/franch.png';
-
-// Navigation items with their corresponding section IDs
-const navItems = [
-  { name: 'Home', href: '#home', id: 'home' },
-  { name: 'Find Us', href: '#footer', id: 'footer' }, // Will be added later
-  { name: 'Sellers', href: '#sellers', id: 'sellers' },
-  { name: 'About Us', href: '#about', id: 'about' },
-  { name: 'Reservation', href: '#reservation', id: 'reservation' }
-];
+import { useLanguage } from '../../contexts/LanguageContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const NavBar = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const { currentLanguage, changeLanguage, t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const isDarkMode = theme === 'dark';
   const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Navigation items with their corresponding section IDs
+  const navItems = useMemo(() => [
+    { name: t('navbar.home'), href: '#home', id: 'home' },
+    { name: t('navbar.findUs'), href: '#footer', id: 'footer' },
+    { name: t('navbar.sellers'), href: '#sellers', id: 'sellers' },
+    { name: t('navbar.about'), href: '#about', id: 'about' },
+    { name: t('navbar.reservation'), href: '#reservation', id: 'reservation' }
+  ], [t]);
 
   // Smooth scroll function
   const smoothScrollTo = (elementId) => {
@@ -65,23 +68,20 @@ const NavBar = () => {
     handleScroll(); // Call once to set initial active section
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [navItems]);
 
   const handleLanguageChange = (lang) => {
-    setSelectedLanguage(lang);
+    changeLanguage(lang);
     setIsDropdownOpen(false);
-    // TODO: Implement language switching logic
-    console.log(`Language changed to: ${lang}`);
   };
 
   const handleThemeToggle = () => {
-    setIsDarkMode(!isDarkMode);
-    // TODO: Implement dark/light mode logic
+    toggleTheme();
     console.log(`Theme changed to: ${!isDarkMode ? 'dark' : 'light'} mode`);
   };
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm border-b border-gray-100">
+    <nav className="absolute top-0 left-0 right-0 z-50 bg-white/90 dark:bg-dark-primary/90 backdrop-blur-sm shadow-sm border-b border-gray-100 dark:border-gray-800 transition-colors duration-300 ease-in-out">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 relative">
           {/* Logo */}
@@ -102,14 +102,14 @@ const NavBar = () => {
                   onClick={() => smoothScrollTo(item.id)}
                   className={`px-3 py-2 text-sm font-medium font-inter transition-all duration-300 relative group ${
                     activeSection === item.id
-                      ? 'text-blue-600'
-                      : 'text-gray-600 hover:text-blue-600'
+                      ? 'text-blue-600 dark:text-blue-400'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
                   }`}
                 >
                   {item.name}
                   {/* Active indicator */}
                   <span
-                    className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ${
+                    className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300 ${
                       activeSection === item.id ? 'w-full' : 'group-hover:w-full'
                     }`}
                   />
@@ -123,19 +123,19 @@ const NavBar = () => {
             {/* Language Selector with Flag and Dropdown */}
             <div className="relative">
               <div 
-                className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 px-3 py-2 rounded-md transition-colors duration-200"
+                className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2 rounded-md transition-colors duration-200"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 <img 
-                  src={selectedLanguage === 'en' ? EnglishFlag : FrenchFlag} 
-                  alt={selectedLanguage === 'en' ? "English" : "French"} 
+                  src={currentLanguage === 'en' ? EnglishFlag : FrenchFlag} 
+                  alt={currentLanguage === 'en' ? t('navbar.english') : t('navbar.french')} 
                   className="w-6 h-4 rounded-sm"
                 />
-                <span className="text-sm font-medium text-gray-900 font-inter">
-                  {selectedLanguage === 'en' ? 'EN' : 'FR'}
+                <span className="text-sm font-medium text-gray-900 dark:text-gray-100 font-inter">
+                  {currentLanguage === 'en' ? 'EN' : 'FR'}
                 </span>
                 <svg 
-                  className={`w-4 h-4 text-gray-600 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} 
+                  className={`w-4 h-4 text-gray-600 dark:text-gray-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} 
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24"
@@ -146,12 +146,14 @@ const NavBar = () => {
               
               {/* Dropdown Menu */}
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-dark-secondary rounded-md shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-5 z-50">
                   <div className="py-1">
                     <button
                       onClick={() => handleLanguageChange('en')}
-                      className={`flex items-center space-x-2 w-full px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-200 ${
-                        selectedLanguage === 'en' ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                      className={`flex items-center space-x-2 w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 ${
+                        currentLanguage === 'en' 
+                          ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' 
+                          : 'text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       <img 
@@ -159,12 +161,14 @@ const NavBar = () => {
                         alt="English" 
                         className="w-5 h-3 rounded-sm"
                       />
-                      <span className="font-inter">English</span>
+                      <span className="font-inter">{t('navbar.english')}</span>
                     </button>
                     <button
                       onClick={() => handleLanguageChange('fr')}
-                      className={`flex items-center space-x-2 w-full px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-200 ${
-                        selectedLanguage === 'fr' ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                      className={`flex items-center space-x-2 w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 ${
+                        currentLanguage === 'fr' 
+                          ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' 
+                          : 'text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       <img 
@@ -172,7 +176,7 @@ const NavBar = () => {
                         alt="French" 
                         className="w-5 h-3 rounded-sm"
                       />
-                      <span className="font-inter">Français</span>
+                      <span className="font-inter">{t('navbar.french')}</span>
                     </button>
                   </div>
                 </div>
@@ -225,27 +229,29 @@ const NavBar = () => {
             {/* Language Selector for Mobile */}
             <div className="relative">
               <div 
-                className="flex items-center space-x-1 cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors duration-200"
+                className="flex items-center space-x-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded-md transition-colors duration-200"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 <img 
-                  src={selectedLanguage === 'en' ? EnglishFlag : FrenchFlag} 
-                  alt={selectedLanguage === 'en' ? "English" : "French"} 
+                  src={currentLanguage === 'en' ? EnglishFlag : FrenchFlag} 
+                  alt={currentLanguage === 'en' ? t('navbar.english') : t('navbar.french')} 
                   className="w-5 h-3 rounded-sm"
                 />
                 <span className="text-xs font-medium text-gray-900 font-inter">
-                  {selectedLanguage === 'en' ? 'EN' : 'FR'}
+                  {currentLanguage === 'en' ? 'EN' : 'FR'}
                 </span>
               </div>
               
               {/* Mobile Dropdown Menu */}
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-28 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                <div className="absolute right-0 mt-2 w-28 bg-white dark:bg-dark-secondary rounded-md shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-5 z-50">
                   <div className="py-1">
                     <button
                       onClick={() => handleLanguageChange('en')}
-                      className={`flex items-center space-x-2 w-full px-3 py-2 text-xs hover:bg-gray-100 transition-colors duration-200 ${
-                        selectedLanguage === 'en' ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                      className={`flex items-center space-x-2 w-full px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 ${
+                        currentLanguage === 'en' 
+                          ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' 
+                          : 'text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       <img 
@@ -257,8 +263,10 @@ const NavBar = () => {
                     </button>
                     <button
                       onClick={() => handleLanguageChange('fr')}
-                      className={`flex items-center space-x-2 w-full px-3 py-2 text-xs hover:bg-gray-100 transition-colors duration-200 ${
-                        selectedLanguage === 'fr' ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                      className={`flex items-center space-x-2 w-full px-3 py-2 text-xs hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 ${
+                        currentLanguage === 'fr' 
+                          ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' 
+                          : 'text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       <img 
@@ -299,7 +307,7 @@ const NavBar = () => {
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="bg-white dark:bg-dark-primary inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-dark-primary"
               aria-controls="mobile-menu"
               aria-expanded={isMobileMenuOpen}
             >
@@ -321,15 +329,15 @@ const NavBar = () => {
       {/* Mobile menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200 shadow-lg">
+          <div className="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-dark-primary border-t border-gray-200 dark:border-gray-700 shadow-lg">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => smoothScrollTo(item.id)}
                 className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ${
                   activeSection === item.id
-                    ? 'text-blue-600 bg-blue-50'
-                    : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
                 }`}
               >
                 {item.name}

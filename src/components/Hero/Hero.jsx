@@ -1,13 +1,15 @@
 import React from 'react';
 import { useHero } from '../../hooks/useHero';
+import { useLanguage } from '../../contexts/LanguageContext';
 
  const Hero = () => {
   const { heroContent, loading, error } = useHero();
+  const { t } = useLanguage();
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-gray-600 font-inter text-lg">Loading...</div>
+        <div className="text-gray-600 font-inter text-lg">{t('hero.loading')}</div>
       </div>
     );
   }
@@ -34,21 +36,24 @@ import { useHero } from '../../hooks/useHero';
             {/* Main Hero Title */}
             <div className="flex-1">
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter leading-tight tracking-tight">
-                {heroContent.title}
+                {t('hero.title')}
               </h1>
             </div>
             
             {/* Statistics */}
-            {heroContent.statistics.map((stat, index) => (
-              <div key={index} className="flex-1 text-center">
-                <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-1 tracking-tight">
-                  {stat.number}
+            {heroContent.statistics.map((stat, index) => {
+              const statKeys = ['propertiesListed', 'happyClients', 'averageDays'];
+              return (
+                <div key={index} className="flex-1 text-center">
+                  <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-1 tracking-tight">
+                    {stat.number}
+                  </div>
+                  <div className="text-sm md:text-base lg:text-lg text-white font-inter font-medium opacity-90 leading-relaxed">
+                    {t(`hero.statistics.${statKeys[index]}`)}
+                  </div>
                 </div>
-                <div className="text-sm md:text-base lg:text-lg text-white font-inter font-medium opacity-90 leading-relaxed">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -72,7 +77,7 @@ import { useHero } from '../../hooks/useHero';
             }
           }}
           className="animate-bounce hover:scale-110 transition-transform duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 rounded-full p-4 bg-black bg-opacity-20 hover:bg-opacity-30"
-          aria-label="Scroll to About section"
+          aria-label={t('hero.scrollToAbout')}
           type="button"
         >
           <svg 

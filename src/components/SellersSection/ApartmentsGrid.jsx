@@ -42,7 +42,7 @@ const ApartmentsGrid = ({ apartments, currentIndex }) => {
   if (!apartments || apartments.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 font-inter text-lg">
+        <p className="text-gray-500 dark:text-gray-400 font-inter text-lg transition-colors duration-300 ease-in-out">
           No apartments available in this region
         </p>
       </div>
@@ -72,7 +72,7 @@ const ApartmentsGrid = ({ apartments, currentIndex }) => {
         {visibleApartments.map((apartment, index) => (
           <div
             key={`${apartment.id}-${currentIndex}`}
-            className={`relative group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-xl flex-shrink-0 w-full sm:w-64 md:w-72 lg:w-80 ${
+            className={`relative group cursor-pointer overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-xl flex-shrink-0 w-full sm:w-64 md:w-72 lg:w-80 ${
               isTransitioning ? 'opacity-0 animate-fadeIn' : 'opacity-100'
             }`}
             style={{
@@ -94,8 +94,8 @@ const ApartmentsGrid = ({ apartments, currentIndex }) => {
             />
             
             {/* Region Label - Top Right */}
-            <div className="absolute top-4 right-4 bg-white bg-opacity-95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg">
-              <span className="text-xs font-inter font-bold text-gray-800 uppercase tracking-wide">
+            <div className="absolute top-4 right-4 bg-white dark:bg-dark-primary bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg transition-colors duration-300 ease-in-out">
+              <span className="text-xs font-inter font-bold text-gray-800 dark:text-gray-100 uppercase tracking-wide">
                 {apartment.name ? apartment.name.split(' ')[0] : 'Apartment'}
               </span>
             </div>

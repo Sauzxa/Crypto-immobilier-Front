@@ -2,8 +2,11 @@ import React from 'react';
 import FooterLogo from '../../assets/images/logos/FooterLogo.png';
 import FacebookLogo from '../../assets/images/logos/facebookLogo.png';
 import InstagramLogo from '../../assets/images/logos/instagram-logo.png';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const Footer = () => {
+  const { t } = useLanguage();
+  
   // Google Maps location for La Promotion Immobilière Crypto
   const GoogleMapsEmbed = () => {
     return (
@@ -16,7 +19,7 @@ const Footer = () => {
           allowFullScreen=""
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          title="La Promotion Immobilière Crypto Location"
+          title={t('footer.mapTitle')}
         />
       </div>
     );
@@ -36,32 +39,36 @@ const Footer = () => {
                 className="w-16 h-auto mr-4 object-contain"
               />
               <h3 className="text-xl font-bold font-inter">
-                CRYPTO<br />IMMOBILIER
+                {t('footer.companyName').split('\n').map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    {index < t('footer.companyName').split('\n').length - 1 && <br />}
+                  </React.Fragment>
+                ))}
               </h3>
             </div>
             
             <p className="text-gray-300 text-sm leading-relaxed mb-8">
-              Your trusted partner in real estate investments. We provide exceptional 
-              properties and professional services to help you make the best investment decisions.
+              {t('footer.description')}
             </p>
 
             {/* Social Media Links */}
             <div className="mb-8">
-              <h4 className="text-lg font-semibold mb-4">Social</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('footer.socialTitle')}</h4>
               <div className="flex space-x-6">
                 <a 
                 target='_blank'
                   href="https://www.facebook.com/profile.php?id=61557069279440&mibextid=ZbWKwL" 
                   className="hover:opacity-80 transition-opacity duration-200"
-                  aria-label="Facebook"
+                  alt={t('footer.facebookAlt')}
                 >
                   <img src={FacebookLogo} alt="Facebook" className="w-6 h-6 object-contain" />
                 </a>
                 <a 
                   target='_blank'
-                  href="https://www.instagram.com/younes_tyb" 
+                  href="#" 
                   className="hover:opacity-80 transition-opacity duration-200"
-                  aria-label="Instagram"
+                  alt={t('footer.instagramAlt')}
                 >
                   <img src={InstagramLogo} alt="Instagram" className="w-6 h-6 object-contain" />
                 </a>
@@ -71,7 +78,7 @@ const Footer = () => {
 
           {/* Right Section - Google Maps Embed */}
           <div className="flex flex-col">
-            <h4 className="text-lg font-semibold mb-6">Our Location</h4>
+            <h4 className="text-lg font-semibold mb-6">{t('footer.locationTitle')}</h4>
             <GoogleMapsEmbed />
           </div>
         </div>
@@ -80,7 +87,7 @@ const Footer = () => {
         <div className="border-t border-gray-600 mt-12 pt-8">
           <div className="text-center">
             <p className="text-gray-400 text-sm">
-              © 2025 Crypto Immobilier | All Rights Reserved
+              {t('footer.copyright')}
             </p>
           </div>
         </div>

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { DEFAULT_SELLERS_CONTENT } from '../../constants';
 import { bestSellersAPI } from '../../utils/api';
+import { useLanguage } from '../../contexts/LanguageContext';
 import RegionSelector from './RegionSelector';
 import ApartmentsGrid from './ApartmentsGrid';
 
 const SellersSection = () => {
+  const { t } = useLanguage();
   const [sellersData, setSellersData] = useState(DEFAULT_SELLERS_CONTENT);
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -80,10 +82,10 @@ const SellersSection = () => {
   // Show loading state
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50 relative">
+      <section className="py-16 bg-gray-50 dark:bg-dark-secondary transition-colors duration-300 ease-in-out relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="flex items-center justify-center">
-            <div className="text-gray-600 font-inter text-lg">Loading regions...</div>
+            <div className="text-gray-600 dark:text-gray-400 font-inter text-lg">{t('sellers.loading')}</div>
           </div>
         </div>
       </section>
@@ -98,10 +100,10 @@ const SellersSection = () => {
   // Don't render if no selected region
   if (!selectedRegion) {
     return (
-      <section className="py-16 bg-gray-50 relative">
+      <section className="py-16 bg-gray-50 dark:bg-dark-secondary transition-colors duration-300 ease-in-out relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="flex items-center justify-center">
-            <div className="text-gray-600 font-inter text-lg">No regions available</div>
+            <div className="text-gray-600 dark:text-gray-400 font-inter text-lg">{t('sellers.noRegions')}</div>
           </div>
         </div>
       </section>
@@ -109,7 +111,7 @@ const SellersSection = () => {
   }
 
   return (
-    <section className="py-16 bg-gray-50 relative">
+    <section className="py-16 bg-light-secondary dark:bg-dark-secondary transition-colors duration-300 ease-in-out relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         
         {/* Main Layout - Left: Text + Controls, Right: Apartments */}
@@ -119,10 +121,13 @@ const SellersSection = () => {
           <div className="flex flex-col gap-8 lg:w-1/3">
             {/* Title */}
             <div>
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 font-inter leading-[0.9] tracking-tight">
-                OUR<br />
-                BEST<br />
-                SELLERS
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white font-inter leading-[0.9] tracking-tight transition-colors duration-300 ease-in-out">
+                {t('sellers.title').split('\n').map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    {index < t('sellers.title').split('\n').length - 1 && <br />}
+                  </React.Fragment>
+                ))}
               </h2>
             </div>
 
@@ -150,14 +155,14 @@ const SellersSection = () => {
           <button 
             onClick={handlePrevious}
             disabled={currentIndex === 0}
-            className={`w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center transition-all duration-300 transform ${
+            className={`w-12 h-12 bg-white dark:bg-dark-primary border-2 border-gray-300 dark:border-gray-600 rounded-full flex items-center justify-center transition-all duration-300 transform ${
               currentIndex === 0 
                 ? 'opacity-50 cursor-not-allowed' 
-                : 'hover:bg-gray-50 hover:border-gray-400 hover:scale-110 active:scale-95'
+                : 'hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 hover:scale-110 active:scale-95'
             }`}
           >
             <svg 
-              className="w-6 h-6 text-gray-600" 
+              className="w-6 h-6 text-gray-600 dark:text-gray-400" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -168,14 +173,14 @@ const SellersSection = () => {
           <button 
             onClick={handleNext}
             disabled={!selectedRegion || !selectedRegion.apartments || currentIndex >= selectedRegion.apartments.length - 1}
-            className={`w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center transition-all duration-300 transform ${
+            className={`w-12 h-12 bg-white dark:bg-dark-primary border-2 border-gray-300 dark:border-gray-600 rounded-full flex items-center justify-center transition-all duration-300 transform ${
               !selectedRegion || !selectedRegion.apartments || currentIndex >= selectedRegion.apartments.length - 1
                 ? 'opacity-50 cursor-not-allowed' 
-                : 'hover:bg-gray-50 hover:border-gray-400 hover:scale-110 active:scale-95'
+                : 'hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500 hover:scale-110 active:scale-95'
             }`}
           >
             <svg 
-              className="w-6 h-6 text-gray-600" 
+              className="w-6 h-6 text-gray-600 dark:text-gray-400" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"

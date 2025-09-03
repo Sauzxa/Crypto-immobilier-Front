@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useDescription } from '../../hooks/useDescription';
+import { useLanguage } from '../../contexts/LanguageContext';
 import Apartment1 from '../../assets/images/apartments/appartement1.png';
 
 const Description = () => {
   const { descriptionContent, loading, error } = useDescription();
+  const { t } = useLanguage();
   const [hoveredCard, setHoveredCard] = useState(null);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-gray-600 font-inter text-lg">Loading...</div>
+      <div className="min-h-screen bg-light-secondary dark:bg-dark-secondary flex items-center justify-center transition-colors duration-300 ease-in-out">
+        <div className="text-gray-600 dark:text-gray-400 font-inter text-lg">{t('description.loading')}</div>
       </div>
     );
   }
@@ -20,17 +22,17 @@ const Description = () => {
   }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white dark:bg-dark-primary transition-colors duration-300 ease-in-out">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
           {/* Left side - Text content */}
           <div className="space-y-6">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 font-inter leading-tight">
-              {descriptionContent.title}
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white font-inter leading-tight transition-colors duration-300 ease-in-out">
+              {t('description.title')}
             </h2>
-            <p className="text-lg text-gray-600 font-inter leading-relaxed">
-              {descriptionContent.description}
+            <p className="text-lg text-gray-600 dark:text-gray-300 font-inter leading-relaxed transition-colors duration-300 ease-in-out">
+              {t('description.subtitle')}
             </p>
           </div>
 
@@ -43,7 +45,7 @@ const Description = () => {
               return (
                 <div
                   key={apartment.id}
-                  className="absolute bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 transition-all duration-300 ease-out cursor-pointer"
+                  className="absolute bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 ease-out cursor-pointer"
                   style={{
                     zIndex: isHovered ? 100 : apartment.zIndex,
                     width: isHovered ? '320px' : '280px',
@@ -72,11 +74,11 @@ const Description = () => {
 
                   {/* Apartment Details */}
                   <div className="p-4">
-                    <div className={`${isHovered ? 'text-3xl' : 'text-2xl'} font-bold text-gray-900 font-inter transition-all duration-300`}>
+                    <div className={`${isHovered ? 'text-3xl' : 'text-2xl'} font-bold text-gray-900 dark:text-white font-inter transition-all duration-300`}>
                       {apartment.price}
                     </div>
-                    <div className={`${isHovered ? 'text-base' : 'text-sm'} text-gray-600 font-inter font-medium transition-all duration-300`}>
-                      {apartment.period}
+                    <div className={`${isHovered ? 'text-base' : 'text-sm'} text-gray-600 dark:text-gray-300 font-inter font-medium transition-all duration-300`}>
+                      {t(`description.apartments.period${apartment.id}`)}
                     </div>
                   </div>
                 </div>
