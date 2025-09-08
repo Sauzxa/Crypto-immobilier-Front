@@ -1,12 +1,82 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Crypto Immobilier Frontend
 
-Currently, two official plugins are available:
+Modern real estate web application for Crypto Immobilier, built with React, Vite, and Tailwind CSS.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Multi-language support** (French & English)
+- **Light/Dark theme toggle**
+- **Animated sections** using Framer Motion
+- **Dynamic Hero, Description, Sellers, and Reservation sections**
+- **API integration** for dynamic content (apartments, regions, reservation form)
+- **Responsive design** for desktop and mobile
+- **Custom UI components** (Navbar, Footer, Region Selector, etc.)
+- **Google Maps integration** in the footer
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Project Structure
+
+- `src/components/` – UI components (Header, Hero, Description, SellersSection, ReservationForm, Footer)
+- `src/constants/` – Default content and API endpoints
+- `src/contexts/` – React context providers (Language, Theme, Hero, Description)
+- `src/hooks/` – Custom hooks for fetching content
+- `src/locales/` – i18n translation files (en, fr)
+- `src/utils/` – API utility functions
+- `src/assets/` – Images and icons
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v18+ recommended)
+- npm or yarn
+
+### Install dependencies
+```sh
+npm install
+# or
+yarn install
+```
+
+### Run the development server
+```sh
+npm run dev
+# or
+yarn dev
+```
+The app will be available at [http://localhost:5173](http://localhost:5173)
+
+### Build for production
+```sh
+npm run build
+# or
+yarn build
+```
+
+### Preview production build
+```sh
+npm run preview
+# or
+yarn preview
+```
+
+### Lint the code
+```sh
+npm run lint
+# or
+yarn lint
+```
+
+## Environment & API
+
+- The frontend expects a backend API running locally (see endpoints in `src/constants/index.js`).
+- Update API endpoints as needed for deployment.
+
+## Customization
+
+- **Translations:** Edit `src/locales/en.json` and `src/locales/fr.json`.
+- **Theme:** Tailwind config in `tailwind.config.js`.
+- **Images:** Place new images in `src/assets/images/` or `src/assets/icons/`.
+
+## License
+
+© 2025 Crypto Immobilier. All rights reserved.
